@@ -469,8 +469,12 @@ function loadLocal(){
 }
 
 function save(){
+  // שמור מיד ב-localStorage
   try{saveLocal();showSaved();}catch(e){console.error("שגיאת שמירה:",e)}
-  clearTimeout(_ft);_ft=setTimeout(fbPush,1400);
+  // שלח ל-Firebase מיד (ללא delay) + debounce לקריאות נוספות
+  clearTimeout(_ft);
+  fbPush(); // מיידי
+  _ft=setTimeout(fbPush,3000); // גם אחרי 3 שניות לוודא
 }
 
 function fbPush(){
@@ -496,7 +500,12 @@ function mergeWithSeed(fbTasks, fbCrec, fbBoards){
 }
 
 function fbLoad(){
-  return fetch(FB+"/yuval.json").then(function(r){return r.json()}).then(function(d){
+  console.log("טוען מ-Firebase:", FB+"/yuval.json");
+  return fetch(FB+"/yuval.json").then(function(r){
+    console.log("Firebase status:", r.status);
+    return r.json();
+  }).then(function(d){
+    console.log("Firebase data:", d?("tasks: "+(d.tasks?d.tasks.length:0)):"null");
     if(d&&d.tasks&&d.tasks.length>0){
       mergeWithSeed(d.tasks, d.crec, d.boards);
       setSync(true,"✓ גובה");
@@ -970,14 +979,30 @@ rW();
 fbLoad().then(function(){
   rW();
   if(lsOk)saveLocal();
+  // אחרי טעינה ראשונה — שלח נתונים ל-Firebase אם הוא ריק
 }).catch(function(e){
   console.error("Firebase שגיאה:",e);
+  // Firebase נכשל — הנתונים ב-localStorage, נסה שוב בעוד 5 שניות
+  setTimeout(function(){fbPush();},5000);
 });
 
 // שמירה אוטומטית כל 30 שניות
 if(lsOk){
-  setInterval(function(){saveLocal();console.log("נשמר מקומית")},30000);
+  setInterval(function(){saveLocal();fbPush();},30000);
 }
+
+// שמור לפני טעינה מחדש / סגירה
+window.addEventListener('beforeunload', function(){
+  try{saveLocal();}catch(e){}
+  // שלח ל-Firebase באופן synchronous לפני סגירה
+  try{
+    var data=JSON.stringify({tasks:T,crec:CR,boards:BDS,ts:Date.now()});
+    var xhr=new XMLHttpRequest();
+    xhr.open('PUT', FB+'/yuval.json', false); // synchronous
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.send(data);
+  }catch(e){}
+});
 setInterval(fbPush,300000);
 </script>
 </body>
