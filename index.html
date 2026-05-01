@@ -484,17 +484,8 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // תמיד מתחיל מה-Seed, ממזג עם שינויי המשתמש
-  var seedIds=new Set(SEED.map(function(t){return t.id}));
-  // שמור גרסאות מעודכנות של משימות seed (צבעים, כותרות)
-  T=SEED.map(function(t){
-    var fb=fbTasks.find(function(ft){return ft.id===t.id});
-    return Object.assign({color:"none"},t,fb?{color:fb.color||"none",title:fb.title,completed:fb.completed,row:fb.row}:{});
-  });
-  // הוסף משימות שהמשתמש יצר (לא ב-Seed)
-  fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
-    T.push(Object.assign({color:"none"},t));
-  });
+  // Firebase הוא האמת — קח הכל משם
+  T=fbTasks.map(function(t){return Object.assign({color:"none"},t)});
   CR=fbCrec||{};
   if(fbBoards&&fbBoards.length>0)BDS=fbBoards;
 }
