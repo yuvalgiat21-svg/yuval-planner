@@ -49,21 +49,18 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .pill.now{border-color:var(--imp);color:var(--imp);font-weight:700}
 .pill.has{border-color:var(--rot);color:var(--rot)}
 .swrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 8px 90px}
-.grid-tbl{border-collapse:collapse;min-width:calc(70px + 7*130px);width:100%;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;border-spacing:0;table-layout:fixed}
-.grid-tbl th.dh{width:130px}
-.grid-tbl th.corner{width:70px}
+.grid-tbl{border-collapse:collapse;min-width:calc(70px + 7*130px);width:100%;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;border-spacing:0}
 .grid-tbl th.corner{background:#e0e0e0;width:70px;border:none}
 .grid-tbl th.dh{background:#e0e0e0;text-align:center;padding:8px 4px;border:1px solid var(--bd)}
 .grid-tbl th.dh.tod{background:#c8c4c0}
 .dday{font-family:'Assistant',sans-serif;font-size:14px;font-weight:700;display:block}
 .ddt{font-size:10px;color:var(--mid);display:block;margin-top:1px}
 .grid-tbl th.dh.tod .dday{color:var(--imp)}
-.rl-th{background:#e0e0e0;writing-mode:vertical-lr;
-  transform:rotate(180deg);text-align:center;
-  font-family:'Assistant',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;
-  padding:8px 4px;border:1px solid var(--bd);width:68px}
-.cell-td{background:var(--paper);padding:3px;width:130px;vertical-align:top;
-  border:1px solid var(--bd);cursor:text;overflow:hidden;word-break:break-word}
+.rl-th{background:#e0e0e0;text-align:center;vertical-align:middle;
+  font-family:'Assistant',sans-serif;font-size:12px;font-weight:700;
+  padding:4px 6px;border:1px solid var(--bd);width:68px;white-space:nowrap}
+.cell-td{background:var(--paper);padding:3px;min-width:130px;vertical-align:top;
+  border:1px solid var(--bd);cursor:text}
 .cell-td.tod{background:#fdf6ee}
 .cell-td:hover{background:#faf3e8}
 .cell-td.dov{background:#e8f4e8;outline:2px dashed var(--rot)}
@@ -73,52 +70,33 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
   position:relative}
 .chip.done{opacity:.28;text-decoration:line-through}
 .ct{flex:1;word-break:break-word}
-.cbts{display:flex;flex-shrink:0;gap:3px;align-items:center;margin-right:2px}
-.cbt{background:rgba(0,0,0,.06);border:none;cursor:pointer;padding:1px 4px;
-  font-size:12px;color:#444;border-radius:4px;line-height:1.4;flex-shrink:0}
-.cbt:hover{background:rgba(0,0,0,.15)}
-.cbt.x{color:#c0392b;font-size:14px;font-weight:700;background:rgba(192,57,43,.1)}
-.cbt.x:hover{background:rgba(192,57,43,.25)}
+.cbts{display:flex;flex-shrink:0;gap:2px;align-items:center;margin-left:3px}
+/* cbts always visible */
+.cbt{background:none;border:none;cursor:pointer;padding:0 2px;
+  font-size:8px;color:rgba(0,0,0,.18);line-height:1;flex-shrink:0}
+.cbt:hover{color:rgba(0,0,0,.55);background:rgba(0,0,0,.06);border-radius:2px}
+.cbt.x{color:rgba(192,57,43,.25)}.cbt.x:hover{color:#c0392b;background:rgba(192,57,43,.08)}
 .ri .chip{--cb:#eeebf8;--ca:var(--imp)}
 .rr .chip{--cb:#e8f2ea;--ca:var(--rot)}
 .rf .chip{--cb:#f9eaed;--ca:var(--fit)}
 .rb .chip{--cb:#f8f2e2;--ca:var(--bday)}
-.chip[data-c="gray1"]  {--cb:#f5f5f5!important;--ca:#757575!important;color:#111!important}
-.chip[data-c="gray2"]  {--cb:#bdbdbd!important;--ca:#424242!important;color:#111!important}
-.chip[data-c="gray3"]  {--cb:#757575!important;--ca:#212121!important;color:#fff!important}
-.chip[data-c="black"]  {--cb:#424242!important;--ca:#000!important;color:#fff!important}
-.chip[data-c="red1"]   {--cb:#ffcdd2!important;--ca:#c62828!important;color:#111!important}
-.chip[data-c="red2"]   {--cb:#ef5350!important;--ca:#b71c1c!important;color:#fff!important}
-.chip[data-c="red3"]   {--cb:#c62828!important;--ca:#7f0000!important;color:#fff!important}
-.chip[data-c="pink1"]  {--cb:#fce4ec!important;--ca:#880e4f!important;color:#111!important}
-.chip[data-c="pink2"]  {--cb:#ec407a!important;--ca:#880e4f!important;color:#fff!important}
-.chip[data-c="pink3"]  {--cb:#ad1457!important;--ca:#4a0030!important;color:#fff!important}
-.chip[data-c="orange1"]{--cb:#ffe0b2!important;--ca:#e65100!important;color:#111!important}
-.chip[data-c="orange2"]{--cb:#ff7043!important;--ca:#bf360c!important;color:#fff!important}
-.chip[data-c="orange3"]{--cb:#e64a19!important;--ca:#7f1900!important;color:#fff!important}
-.chip[data-c="yellow1"]{--cb:#fff9c4!important;--ca:#f57f17!important;color:#111!important}
-.chip[data-c="yellow2"]{--cb:#ffca28!important;--ca:#e65100!important;color:#111!important}
-.chip[data-c="gold"]   {--cb:#ffa000!important;--ca:#e65100!important;color:#111!important}
-.chip[data-c="neon"]   {--cb:#ccff90!important;--ca:#1b5e20!important;color:#111!important}
-.chip[data-c="lime"]   {--cb:#dcedc8!important;--ca:#33691e!important;color:#111!important}
-.chip[data-c="green1"] {--cb:#c8e6c9!important;--ca:#1b5e20!important;color:#111!important}
-.chip[data-c="green2"] {--cb:#388e3c!important;--ca:#1b5e20!important;color:#fff!important}
-.chip[data-c="teal1"]  {--cb:#b2dfdb!important;--ca:#004d40!important;color:#111!important}
-.chip[data-c="teal2"]  {--cb:#00897b!important;--ca:#004d40!important;color:#fff!important}
-.chip[data-c="cyan"]   {--cb:#b3e5fc!important;--ca:#01579b!important;color:#111!important}
-.chip[data-c="blue1"]  {--cb:#bbdefb!important;--ca:#0d47a1!important;color:#111!important}
-.chip[data-c="blue2"]  {--cb:#1e88e5!important;--ca:#0d47a1!important;color:#fff!important}
-.chip[data-c="blue3"]  {--cb:#1565c0!important;--ca:#002171!important;color:#fff!important}
-.chip[data-c="indigo"] {--cb:#c5cae9!important;--ca:#1a237e!important;color:#111!important}
-.chip[data-c="purple1"]{--cb:#f3e5f5!important;--ca:#4a148c!important;color:#111!important}
-.chip[data-c="purple2"]{--cb:#ce93d8!important;--ca:#4a148c!important;color:#111!important}
-.chip[data-c="purple3"]{--cb:#7b1fa2!important;--ca:#4a148c!important;color:#fff!important}
-.chip[data-c="brown1"] {--cb:#efebe9!important;--ca:#4e342e!important;color:#111!important}
-.chip[data-c="brown2"] {--cb:#d7ccc8!important;--ca:#3e2723!important;color:#111!important}
-.chip[data-c="brown3"] {--cb:#bcaaa4!important;--ca:#3e2723!important;color:#111!important}
-.chip[data-c="brown4"] {--cb:#8d6e63!important;--ca:#3e2723!important;color:#fff!important}
-.chip[data-c="brown5"] {--cb:#6d4c41!important;--ca:#3e2723!important;color:#fff!important}
-.chip[data-c="brown6"] {--cb:#4e342e!important;--ca:#1a0000!important;color:#fff!important}
+.chip[data-c="red"]    {--cb:#ef5350!important;--ca:#b71c1c!important;color:#fff!important}
+.chip[data-c="orange"] {--cb:#ff7043!important;--ca:#bf360c!important;color:#fff!important}
+.chip[data-c="yellow"] {--cb:#ffca28!important;--ca:#f57f17!important;color:#333!important}
+.chip[data-c="lime"]   {--cb:#9ccc65!important;--ca:#33691e!important;color:#fff!important}
+.chip[data-c="neon"]   {--cb:#39ff14!important;--ca:#007700!important;color:#111!important}
+.chip[data-c="green"]  {--cb:#26a69a!important;--ca:#004d40!important;color:#fff!important}
+.chip[data-c="teal"]   {--cb:#26c6da!important;--ca:#006064!important;color:#fff!important}
+.chip[data-c="cyan"]   {--cb:#29b6f6!important;--ca:#01579b!important;color:#fff!important}
+.chip[data-c="blue"]   {--cb:#42a5f5!important;--ca:#0d47a1!important;color:#fff!important}
+.chip[data-c="indigo"] {--cb:#5c6bc0!important;--ca:#1a237e!important;color:#fff!important}
+.chip[data-c="purple"] {--cb:#ab47bc!important;--ca:#4a148c!important;color:#fff!important}
+.chip[data-c="pink"]   {--cb:#ec407a!important;--ca:#880e4f!important;color:#fff!important}
+.chip[data-c="brown"]  {--cb:#8d6e63!important;--ca:#3e2723!important;color:#fff!important}
+.chip[data-c="dbrown"] {--cb:#5d4037!important;--ca:#1b0000!important;color:#fff!important}
+.chip[data-c="gray"]   {--cb:#78909c!important;--ca:#263238!important;color:#fff!important}
+.chip[data-c="gold"]   {--cb:#ffd54f!important;--ca:#e65100!important;color:#333!important}
+.chip[data-c="salmon"] {--cb:#f06292!important;--ca:#880e4f!important;color:#fff!important}
 .cedit{width:100%;background:var(--paper);border:1.5px solid var(--tx);
   border-radius:4px;padding:3px 6px;font-size:11px;font-family:'Rubik',sans-serif;
   color:var(--tx);outline:none;resize:none;overflow:hidden;line-height:1.35}
@@ -129,7 +107,7 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .cell-td:hover .cinp::placeholder,.cell-td:focus-within .cinp::placeholder{color:var(--bd)}
 .cinp:focus{background:#ede2d4}
 .pal{position:fixed;z-index:999;background:var(--paper);border:1.5px solid var(--bd);
-  border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;width:260px;
+  border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;width:184px;
   box-shadow:0 4px 20px rgba(36,22,8,.2);visibility:hidden}
 .dot{width:22px;height:22px;border-radius:50%;cursor:pointer;
   border:2.5px solid transparent;transition:transform .12s}
@@ -388,19 +366,12 @@ const ROWS=[
   {id:"birthdays",l:"ימי הולדת", rc:"rb",col:"#a86c10",bg:"#f8f2e2",bg2:"#fdf8ec",ic:"#a86c10"},
 ];
 const CLRS=[
-  {id:"none",   h:"#e8dfd2"},{id:"gray1",  h:"#eeeeee"},{id:"gray2",  h:"#9e9e9e"},
-  {id:"gray3",  h:"#616161"},{id:"black",  h:"#212121"},
-  {id:"red1",   h:"#ff8a80"},{id:"red2",   h:"#f44336"},{id:"red3",   h:"#b71c1c"},
-  {id:"pink1",  h:"#f48fb1"},{id:"pink2",  h:"#e91e63"},{id:"pink3",  h:"#880e4f"},
-  {id:"orange1",h:"#ffcc80"},{id:"orange2",h:"#ff7043"},{id:"orange3",h:"#bf360c"},
-  {id:"yellow1",h:"#fff176"},{id:"yellow2",h:"#ffca28"},{id:"gold",   h:"#f57f17"},
-  {id:"neon",   h:"#39ff14"},{id:"lime",   h:"#aed581"},{id:"green1", h:"#66bb6a"},
-  {id:"green2", h:"#2e7d32"},{id:"teal1",  h:"#4db6ac"},{id:"teal2",  h:"#00695c"},
-  {id:"cyan",   h:"#29b6f6"},{id:"blue1",  h:"#90caf9"},{id:"blue2",  h:"#1e88e5"},
-  {id:"blue3",  h:"#0d47a1"},{id:"indigo", h:"#5c6bc0"},
-  {id:"purple1",h:"#ce93d8"},{id:"purple2",h:"#9c27b0"},{id:"purple3",h:"#4a148c"},
-  {id:"brown1", h:"#efebe9"},{id:"brown2", h:"#d7ccc8"},{id:"brown3", h:"#bcaaa4"},
-  {id:"brown4", h:"#8d6e63"},{id:"brown5", h:"#6d4c41"},{id:"brown6", h:"#4e342e"},
+  {id:"none",  h:"#c5b9aa"},{id:"red",   h:"#ef5350"},{id:"orange",h:"#ff7043"},
+  {id:"yellow",h:"#ffca28"},{id:"lime",  h:"#9ccc65"},{id:"neon",  h:"#39ff14"},{id:"green", h:"#26a69a"},
+  {id:"teal",  h:"#26c6da"},{id:"cyan",  h:"#29b6f6"},{id:"blue",  h:"#42a5f5"},
+  {id:"indigo",h:"#5c6bc0"},{id:"purple",h:"#ab47bc"},{id:"pink",  h:"#ec407a"},
+  {id:"brown", h:"#6d4c41"},{id:"dbrown",h:"#3e2723"},{id:"gray",  h:"#78909c"},{id:"gold",  h:"#ffd54f"},
+  {id:"salmon",h:"#f06292"},
 ];
 
 var T=SEED.map(function(t){return Object.assign({color:"none"},t)});
@@ -498,12 +469,8 @@ function loadLocal(){
 }
 
 function save(){
-  // שמור מיד ב-localStorage
   try{saveLocal();showSaved();}catch(e){console.error("שגיאת שמירה:",e)}
-  // שלח ל-Firebase מיד (ללא delay) + debounce לקריאות נוספות
-  clearTimeout(_ft);
-  fbPush(); // מיידי
-  _ft=setTimeout(fbPush,3000); // גם אחרי 3 שניות לוודא
+  clearTimeout(_ft);_ft=setTimeout(fbPush,1400);
 }
 
 function fbPush(){
@@ -513,19 +480,23 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // Firebase הוא האמת — קח הכל משם
-  T=fbTasks.map(function(t){return Object.assign({color:"none"},t)});
+  // תמיד מתחיל מה-Seed, ממזג עם שינויי המשתמש
+  var seedIds=new Set(SEED.map(function(t){return t.id}));
+  // שמור גרסאות מעודכנות של משימות seed (צבעים, כותרות)
+  T=SEED.map(function(t){
+    var fb=fbTasks.find(function(ft){return ft.id===t.id});
+    return Object.assign({color:"none"},t,fb?{color:fb.color||"none",title:fb.title,completed:fb.completed,row:fb.row}:{});
+  });
+  // הוסף משימות שהמשתמש יצר (לא ב-Seed)
+  fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
+    T.push(Object.assign({color:"none"},t));
+  });
   CR=fbCrec||{};
   if(fbBoards&&fbBoards.length>0)BDS=fbBoards;
 }
 
 function fbLoad(){
-  console.log("טוען מ-Firebase:", FB+"/yuval.json");
-  return fetch(FB+"/yuval.json").then(function(r){
-    console.log("Firebase status:", r.status);
-    return r.json();
-  }).then(function(d){
-    console.log("Firebase data:", d?("tasks: "+(d.tasks?d.tasks.length:0)):"null");
+  return fetch(FB+"/yuval.json").then(function(r){return r.json()}).then(function(d){
     if(d&&d.tasks&&d.tasks.length>0){
       mergeWithSeed(d.tasks, d.crec, d.boards);
       setSync(true,"✓ גובה");
@@ -999,30 +970,14 @@ rW();
 fbLoad().then(function(){
   rW();
   if(lsOk)saveLocal();
-  // אחרי טעינה ראשונה — שלח נתונים ל-Firebase אם הוא ריק
 }).catch(function(e){
   console.error("Firebase שגיאה:",e);
-  // Firebase נכשל — הנתונים ב-localStorage, נסה שוב בעוד 5 שניות
-  setTimeout(function(){fbPush();},5000);
 });
 
 // שמירה אוטומטית כל 30 שניות
 if(lsOk){
-  setInterval(function(){saveLocal();fbPush();},30000);
+  setInterval(function(){saveLocal();console.log("נשמר מקומית")},30000);
 }
-
-// שמור לפני טעינה מחדש / סגירה
-window.addEventListener('beforeunload', function(){
-  try{saveLocal();}catch(e){}
-  // שלח ל-Firebase באופן synchronous לפני סגירה
-  try{
-    var data=JSON.stringify({tasks:T,crec:CR,boards:BDS,ts:Date.now()});
-    var xhr=new XMLHttpRequest();
-    xhr.open('PUT', FB+'/yuval.json', false); // synchronous
-    xhr.setRequestHeader('Content-Type','application/json');
-    xhr.send(data);
-  }catch(e){}
-});
 setInterval(fbPush,300000);
 </script>
 </body>
