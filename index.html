@@ -70,9 +70,9 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .ct{flex:1;word-break:break-word}
 .cbts{display:flex;flex-direction:row;gap:3px;align-items:center;flex-shrink:0;margin-left:3px}
 
-.cbt{display:inline-flex;align-items:center;background:none;border:none;cursor:pointer;padding:0 2px;font-size:10px;color:rgba(0,0,0,.28);line-height:1;flex-shrink:0}
-.cbt:hover{color:rgba(0,0,0,.65)}
-.cbt.x{color:rgba(192,57,43,.4);font-size:12px}
+.cbt{display:inline-flex;align-items:center;background:rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.15);cursor:pointer;padding:1px 5px;font-size:11px;color:#333;border-radius:3px;line-height:1.5;flex-shrink:0;font-family:'Rubik',sans-serif}
+.cbt:hover{background:rgba(0,0,0,.2);color:#000}
+.cbt.x{background:rgba(192,57,43,.12);border-color:rgba(192,57,43,.3);color:#c0392b}
 .ri .chip{--cb:#eeebf8;--ca:var(--imp)}
 .rr .chip{--cb:#e8f2ea;--ca:var(--rot)}
 .rf .chip{--cb:#f9eaed;--ca:var(--fit)}
@@ -604,9 +604,9 @@ function makeChip(t,rowCls){
   chip.draggable=true;
   var ct=el("span","ct",t.title);
   var cbts=el("span","cbts");
-  var be=el("button","cbt","✏️");be.title="ערוך";
+  var be=el("button","cbt","✏");be.title="ערוך";
   var bp=el("button","cbt","🎨");bp.title="צבע";
-  var bd=el("button","cbt x","×");bd.title="מחק";
+  var bd=el("button","cbt x","✕");bd.title="מחק";
   cbts.appendChild(be);cbts.appendChild(bp);cbts.appendChild(bd);
   chip.appendChild(ct);chip.appendChild(cbts);
   var id=t.id;
@@ -684,7 +684,9 @@ function rW(){
           e.preventDefault();
           var d2=fromI(inp.dataset.date);
           mkT({title:inp.value.trim(),row:inp.dataset.row,date:inp.dataset.date,week:isoW(d2),year:d2.getFullYear()});
-          inp.value="";rW();
+          inp.value="";
+          WY=d2.getFullYear();WW=isoW(d2);
+          rW();
         }
         if(e.key==="Escape")inp.blur();
       });
