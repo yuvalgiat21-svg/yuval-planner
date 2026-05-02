@@ -49,9 +49,10 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .pill.now{border-color:var(--imp);color:var(--imp);font-weight:700}
 .pill.has{border-color:var(--rot);color:var(--rot)}
 .swrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:8px 8px 90px}
-.grid-tbl{border-collapse:collapse;width:100%;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;border-spacing:0;table-layout:fixed}
-.grid-tbl th.corner{width:68px}
-.grid-tbl th.dh{width:calc((100% - 68px) / 7)}
+.grid-tbl{border-collapse:collapse;min-width:calc(70px + 7*130px);width:100%;border:1.5px solid var(--bd);border-radius:10px;overflow:hidden;border-spacing:0}
+.grid-tbl th.corner{background:#e0e0e0;width:70px;border:none}
+.grid-tbl th.dh{background:#e0e0e0;text-align:center;padding:8px 4px;border:1px solid var(--bd)}
+.grid-tbl th.dh.tod{background:#c8c4c0}
 .dday{font-family:'Assistant',sans-serif;font-size:14px;font-weight:700;display:block}
 .ddt{font-size:10px;color:var(--mid);display:block;margin-top:1px}
 .grid-tbl th.dh.tod .dday{color:var(--imp)}
@@ -59,13 +60,17 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
   transform:rotate(180deg);text-align:center;
   font-family:'Assistant',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;
   padding:8px 4px;border:1px solid var(--bd);width:68px}
-.cell-td{background:var(--paper);padding:3px;vertical-align:top;border:1px solid var(--bd);cursor:text;overflow:visible;word-break:break-word;white-space:normal;min-width:0}
+.cell-td{background:var(--paper);padding:3px;min-width:130px;vertical-align:top;
+  border:1px solid var(--bd);cursor:text}
 .cell-td.tod{background:#fdf6ee}
 .cell-td:hover{background:#faf3e8}
 .cell-td.dov{background:#e8f4e8;outline:2px dashed var(--rot)}
-.chip{display:flex;align-items:flex-start;gap:3px;font-size:11px;line-height:1.35;padding:3px 6px;margin-bottom:2px;border-radius:4px;cursor:pointer;border-right:3px solid var(--ca,#c5b9aa);background:var(--cb,#f0ebe3);position:relative;width:100%;box-sizing:border-box}
+.chip{display:flex;align-items:flex-start;gap:3px;font-size:11px;line-height:1.35;
+  padding:3px 6px;margin-bottom:2px;border-radius:4px;cursor:pointer;
+  border-right:3px solid var(--ca,#c5b9aa);background:var(--cb,#f0ebe3);
+  position:relative}
 .chip.done{opacity:.28;text-decoration:line-through}
-.ct{flex:1;word-break:break-word;white-space:normal;min-width:0;overflow-wrap:anywhere}
+.ct{flex:1;word-break:break-word}
 .cbts{display:none;flex-shrink:0;gap:1px}
 .chip:hover .cbts{display:flex}
 .cbt{background:none;border:none;cursor:pointer;padding:0 2px;font-size:11px;color:var(--mid);border-radius:3px;line-height:1.2}
@@ -464,10 +469,10 @@ function loadLocal(){
 }
 
 function save(){
-  try{saveLocal();showSaved();}catch(e){console.error("שגיאת שמירה:",e)}
+  try{saveLocal();showSaved();}catch(e){}
   clearTimeout(_ft);
-  fbPush();                      // מיידי
-  _ft=setTimeout(fbPush,3000);   // גם אחרי 3 שניות
+  fbPush();                    // מיידי תמיד
+  _ft=setTimeout(fbPush,2000); // גיבוי נוסף
 }
 
 function fbPush(){
@@ -477,12 +482,16 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // תמיד מתחיל מה-Seed, ממזג עם שינויי המשתמש
+  // Firebase הוא האמת המוחלטת — קח הכל משם
+  // כולל: date, week, year, row, color, title, completed
   var seedIds=new Set(SEED.map(function(t){return t.id}));
-  // שמור גרסאות מעודכנות של משימות seed (צבעים, כותרות)
   T=SEED.map(function(t){
     var fb=fbTasks.find(function(ft){return ft.id===t.id});
-    return Object.assign({color:"none"},t,fb?{color:fb.color||"none",title:fb.title,completed:fb.completed,row:fb.row}:{});
+    if(fb){
+      // Firebase מנצח על הכל — כולל מיקום (date/week/year/row)
+      return Object.assign({color:"none"},t,fb,{color:fb.color||"none"});
+    }
+    return Object.assign({color:"none"},t);
   });
   // הוסף משימות שהמשתמש יצר (לא ב-Seed)
   fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
@@ -976,17 +985,6 @@ if(lsOk){
   setInterval(function(){saveLocal();console.log("נשמר מקומית")},30000);
 }
 setInterval(fbPush,300000);
-
-// שמור לפני רענון/סגירה
-window.addEventListener('beforeunload',function(){
-  try{saveLocal();}catch(e){}
-  try{
-    var xhr=new XMLHttpRequest();
-    xhr.open('PUT',FB+'/yuval.json',false);
-    xhr.setRequestHeader('Content-Type','application/json');
-    xhr.send(JSON.stringify({tasks:T,crec:CR,boards:BDS,ts:Date.now()}));
-  }catch(e){}
-});
 </script>
 </body>
 </html>
