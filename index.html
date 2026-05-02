@@ -56,10 +56,7 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .dday{font-family:'Assistant',sans-serif;font-size:14px;font-weight:700;display:block}
 .ddt{font-size:10px;color:var(--mid);display:block;margin-top:1px}
 .grid-tbl th.dh.tod .dday{color:var(--imp)}
-.rl-th{background:#e0e0e0;writing-mode:vertical-lr;
-  transform:rotate(180deg);text-align:center;
-  font-family:'Assistant',sans-serif;font-size:12px;font-weight:800;letter-spacing:2px;
-  padding:8px 4px;border:1px solid var(--bd);width:68px}
+.rl-th{background:#e0e0e0;text-align:center;vertical-align:middle;font-family:'Assistant',sans-serif;font-size:12px;font-weight:700;padding:4px 6px;border:1px solid var(--bd);width:68px;white-space:nowrap}
 .cell-td{background:var(--paper);padding:3px;min-width:130px;vertical-align:top;
   border:1px solid var(--bd);cursor:text}
 .cell-td.tod{background:#fdf6ee}
@@ -106,11 +103,8 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .cinp::placeholder{color:transparent}
 .cell-td:hover .cinp::placeholder,.cell-td:focus-within .cinp::placeholder{color:var(--bd)}
 .cinp:focus{background:#ede2d4}
-.pal{position:fixed;z-index:999;background:var(--paper);border:1.5px solid var(--bd);
-  border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:5px;width:184px;
-  box-shadow:0 4px 20px rgba(36,22,8,.2);visibility:hidden}
-.dot{width:22px;height:22px;border-radius:50%;cursor:pointer;
-  border:2.5px solid transparent;transition:transform .12s}
+.pal{position:fixed;z-index:999;background:var(--paper);border:1.5px solid var(--bd);border-radius:12px;padding:12px;display:flex;flex-wrap:wrap;gap:7px;width:300px;box-shadow:0 6px 24px rgba(36,22,8,.22);visibility:hidden}
+.dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .12s}
 .dot:hover{transform:scale(1.3)}
 .dot.cur{border-color:var(--tx);transform:scale(1.15)}
 .awrap{padding:8px 8px 90px}
@@ -469,10 +463,8 @@ function loadLocal(){
 }
 
 function save(){
-  try{saveLocal();showSaved();}catch(e){}
-  clearTimeout(_ft);
-  fbPush();                    // מיידי תמיד
-  _ft=setTimeout(fbPush,2000); // גיבוי נוסף
+  try{saveLocal();showSaved();}catch(e){console.error("שגיאת שמירה:",e)}
+  clearTimeout(_ft);_ft=setTimeout(fbPush,1400);
 }
 
 function fbPush(){
@@ -482,16 +474,12 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // Firebase הוא האמת המוחלטת — קח הכל משם
-  // כולל: date, week, year, row, color, title, completed
+  // תמיד מתחיל מה-Seed, ממזג עם שינויי המשתמש
   var seedIds=new Set(SEED.map(function(t){return t.id}));
+  // שמור גרסאות מעודכנות של משימות seed (צבעים, כותרות)
   T=SEED.map(function(t){
     var fb=fbTasks.find(function(ft){return ft.id===t.id});
-    if(fb){
-      // Firebase מנצח על הכל — כולל מיקום (date/week/year/row)
-      return Object.assign({color:"none"},t,fb,{color:fb.color||"none"});
-    }
-    return Object.assign({color:"none"},t);
+    return Object.assign({color:"none"},t,fb?{color:fb.color||"none",title:fb.title,completed:fb.completed,row:fb.row}:{});
   });
   // הוסף משימות שהמשתמש יצר (לא ב-Seed)
   fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
@@ -987,4 +975,40 @@ if(lsOk){
 setInterval(fbPush,300000);
 </script>
 </body>
-</html>
+</html>/* ── CHIP COLORS ── */
+.chip[data-c="gray1"]  {--cb:#f5f5f5;--ca:#757575;color:#111!important}
+.chip[data-c="gray2"]  {--cb:#bdbdbd;--ca:#424242;color:#111!important}
+.chip[data-c="gray3"]  {--cb:#757575;--ca:#212121;color:#fff!important}
+.chip[data-c="black"]  {--cb:#424242;--ca:#000;color:#fff!important}
+.chip[data-c="red1"]   {--cb:#ffcdd2;--ca:#c62828;color:#111!important}
+.chip[data-c="red2"]   {--cb:#ef5350;--ca:#b71c1c;color:#fff!important}
+.chip[data-c="red3"]   {--cb:#c62828;--ca:#7f0000;color:#fff!important}
+.chip[data-c="pink1"]  {--cb:#fce4ec;--ca:#880e4f;color:#111!important}
+.chip[data-c="pink2"]  {--cb:#ec407a;--ca:#880e4f;color:#fff!important}
+.chip[data-c="pink3"]  {--cb:#ad1457;--ca:#4a0030;color:#fff!important}
+.chip[data-c="orange1"]{--cb:#ffe0b2;--ca:#e65100;color:#111!important}
+.chip[data-c="orange2"]{--cb:#ff7043;--ca:#bf360c;color:#fff!important}
+.chip[data-c="orange3"]{--cb:#e64a19;--ca:#7f1900;color:#fff!important}
+.chip[data-c="yellow1"]{--cb:#fff9c4;--ca:#f57f17;color:#111!important}
+.chip[data-c="yellow2"]{--cb:#ffca28;--ca:#e65100;color:#111!important}
+.chip[data-c="gold"]   {--cb:#ffa000;--ca:#e65100;color:#111!important}
+.chip[data-c="neon"]   {--cb:#ccff90;--ca:#1b5e20;color:#111!important}
+.chip[data-c="lime"]   {--cb:#dcedc8;--ca:#33691e;color:#111!important}
+.chip[data-c="green1"] {--cb:#c8e6c9;--ca:#1b5e20;color:#111!important}
+.chip[data-c="green2"] {--cb:#388e3c;--ca:#1b5e20;color:#fff!important}
+.chip[data-c="teal1"]  {--cb:#b2dfdb;--ca:#004d40;color:#111!important}
+.chip[data-c="teal2"]  {--cb:#00897b;--ca:#004d40;color:#fff!important}
+.chip[data-c="cyan"]   {--cb:#b3e5fc;--ca:#01579b;color:#111!important}
+.chip[data-c="blue1"]  {--cb:#bbdefb;--ca:#0d47a1;color:#111!important}
+.chip[data-c="blue2"]  {--cb:#1e88e5;--ca:#0d47a1;color:#fff!important}
+.chip[data-c="blue3"]  {--cb:#1565c0;--ca:#002171;color:#fff!important}
+.chip[data-c="indigo"] {--cb:#c5cae9;--ca:#1a237e;color:#111!important}
+.chip[data-c="purple1"]{--cb:#f3e5f5;--ca:#4a148c;color:#111!important}
+.chip[data-c="purple2"]{--cb:#ce93d8;--ca:#4a148c;color:#111!important}
+.chip[data-c="purple3"]{--cb:#7b1fa2;--ca:#4a148c;color:#fff!important}
+.chip[data-c="brown1"] {--cb:#efebe9;--ca:#4e342e;color:#111!important}
+.chip[data-c="brown2"] {--cb:#d7ccc8;--ca:#3e2723;color:#111!important}
+.chip[data-c="brown3"] {--cb:#bcaaa4;--ca:#3e2723;color:#111!important}
+.chip[data-c="brown4"] {--cb:#8d6e63;--ca:#3e2723;color:#fff!important}
+.chip[data-c="brown5"] {--cb:#6d4c41;--ca:#3e2723;color:#fff!important}
+.chip[data-c="brown6"] {--cb:#4e342e;--ca:#1a0000;color:#fff!important}
