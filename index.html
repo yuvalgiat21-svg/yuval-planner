@@ -103,8 +103,8 @@ body{font-family:'Rubik',sans-serif;background:var(--cream);color:var(--tx);dire
 .cinp::placeholder{color:transparent}
 .cell-td:hover .cinp::placeholder,.cell-td:focus-within .cinp::placeholder{color:var(--bd)}
 .cinp:focus{background:#ede2d4}
-.pal{position:fixed;z-index:999;background:var(--paper);border:1.5px solid var(--bd);border-radius:12px;padding:12px;display:flex;flex-wrap:wrap;gap:7px;width:300px;box-shadow:0 6px 24px rgba(36,22,8,.22);visibility:hidden}
-.dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .12s}
+.pal{position:fixed;z-index:999;background:var(--paper);border:1.5px solid var(--bd);border-radius:12px;padding:12px;display:flex;flex-wrap:wrap;gap:8px;width:340px;box-shadow:0 6px 28px rgba(36,22,8,.25);visibility:hidden}
+.dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .12s;flex-shrink:0}
 .dot:hover{transform:scale(1.3)}
 .dot.cur{border-color:var(--tx);transform:scale(1.15)}
 .awrap{padding:8px 8px 90px}
@@ -474,12 +474,15 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // תמיד מתחיל מה-Seed, ממזג עם שינויי המשתמש
+  // Firebase מנצח על הכל — כולל date, week, year, row, color
   var seedIds=new Set(SEED.map(function(t){return t.id}));
-  // שמור גרסאות מעודכנות של משימות seed (צבעים, כותרות)
   T=SEED.map(function(t){
     var fb=fbTasks.find(function(ft){return ft.id===t.id});
-    return Object.assign({color:"none"},t,fb?{color:fb.color||"none",title:fb.title,completed:fb.completed,row:fb.row}:{});
+    if(fb){
+      // Firebase גובר על Seed לחלוטין — שמור רק color כברירת מחדל
+      return Object.assign({color:"none"},t,fb,{color:fb.color||"none"});
+    }
+    return Object.assign({color:"none"},t);
   });
   // הוסף משימות שהמשתמש יצר (לא ב-Seed)
   fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
@@ -678,11 +681,30 @@ function inEdit(id,chip){
   function rsz(){ta.style.height="0";ta.style.height=ta.scrollHeight+"px"}
   ta.addEventListener("input",rsz);
   ta.addEventListener("keydown",function(e){
-    if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();var v=ta.value.trim();if(v&&v!==orig){upd(id,{title:v});toast("עודכן ✓")}rW()}
-    if(e.key==="Escape")rW();
+    // Enter — שמור וצא
+    if(e.key==="Enter"&&!e.shiftKey){
+      e.preventDefault();
+      var v=ta.value.trim();
+      if(v&&v!==orig){upd(id,{title:v});toast("עודכן ✓");}
+      rW();
+    }
+    // Escape — צא בלי לשמור
+    if(e.key==="Escape"){rW();}
   });
-  ta.addEventListener("blur",function(){var v=ta.value.trim();if(v&&v!==orig)upd(id,{title:v});setTimeout(rW,150)});
-  ct.replaceWith(ta);chip.style.cursor="text";ta.focus();rsz();
+  // blur: שמור בשקט — אל תקרא rW() כי זה מוחק את ה-textarea!
+  ta.addEventListener("blur",function(){
+    var v=ta.value.trim();
+    if(v&&v!==orig)upd(id,{title:v});
+    // rW רק אם המשתמש עבר לאלמנט אחר לחלוטין (לא לחץ בתוך ה-textarea)
+    setTimeout(function(){
+      if(document.activeElement!==ta)rW();
+    },200);
+  });
+  ct.replaceWith(ta);chip.style.cursor="text";
+  // focus בסוף הטקסט
+  ta.focus();
+  ta.selectionStart=ta.selectionEnd=ta.value.length;
+  rsz();
 }
 
 // COLOR PALETTE
