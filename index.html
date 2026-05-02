@@ -474,20 +474,24 @@ function fbPush(){
   .catch(function(){setSync(false,"✕ מקומי")});
 }
 function mergeWithSeed(fbTasks, fbCrec, fbBoards){
-  // Firebase מנצח על הכל — כולל date, week, year, row, color
+  // Firebase מנצח על הכל — כולל מחיקות!
+  // אם משימה ב-Seed אינה ב-Firebase — היא נמחקה ע"י המשתמש, אל תחזיר אותה
+  var fbIds=new Set(fbTasks.map(function(t){return t.id}));
   var seedIds=new Set(SEED.map(function(t){return t.id}));
-  T=SEED.map(function(t){
-    var fb=fbTasks.find(function(ft){return ft.id===t.id});
-    if(fb){
-      // Firebase גובר על Seed לחלוטין — שמור רק color כברירת מחדל
-      return Object.assign({color:"none"},t,fb,{color:fb.color||"none"});
+  
+  T=[];
+  // רק משימות שקיימות ב-Firebase
+  fbTasks.forEach(function(fb){
+    var seed=SEED.find(function(t){return t.id===fb.id});
+    if(seed){
+      // משימת seed — Firebase גובר על הכל
+      T.push(Object.assign({color:"none"},seed,fb,{color:fb.color||"none"}));
+    }else{
+      // משימה שהמשתמש יצר
+      T.push(Object.assign({color:"none"},fb));
     }
-    return Object.assign({color:"none"},t);
   });
-  // הוסף משימות שהמשתמש יצר (לא ב-Seed)
-  fbTasks.filter(function(t){return !seedIds.has(t.id)}).forEach(function(t){
-    T.push(Object.assign({color:"none"},t));
-  });
+  
   CR=fbCrec||{};
   if(fbBoards&&fbBoards.length>0)BDS=fbBoards;
 }
