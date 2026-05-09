@@ -1005,7 +1005,7 @@ if(lsOk&&loadLocal()){
 rW();
 
 // שלב 2: סנכרן עם Firebase
-fbLoad().then(function(){
+Promise.resolve().then(function(){if(false){
   rW();
   if(lsOk)saveLocal();
 }).catch(function(e){
